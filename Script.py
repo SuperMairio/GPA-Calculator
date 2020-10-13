@@ -54,39 +54,57 @@ def CalculateRequired(numHave):
 
     currentGrades = RemoveLowest(GetGrades(numHave))
     totalGrades = toGet + len(currentGrades)
+    dictKeys = list(gradeDict.keys())
+    dictValues = list(gradeDict.values())
+
     newGrades = []
-    gradeList = list(gradeDict.keys())
     currentSum = 0
+    newSum = 0
     x = 0
 
     print("Calculating....")
 
     #This is some gross maths, I apologise
     for grade in currentGrades:
-        print(grade, currentGrades)
         currentSum += grade
 
     #add values to the array
     while x < toGet:
+        print(newGrades)
         newGrades.append(0)
+        x += 1
+
+    y = 0
+
+    while (currentSum + newSum) < (goal * totalGrades):
+        print("adding 0.5s")
+        if newGrades[y] < 4.5:
+            newGrades[y] += 0.5
+            newSum += 0.5
+        else:
+            y += 1
+        print(newSum)
 
     #if any grades are super low bump them to try and balance the grades
     #this works because if a grade is super low you must have at least one 4.5
-    x = -1
-    for score in newGrades:
-        x += 1
-        if score <= 2:
-            newGrades[x] += 1
-            try:
-                highest = newGrades.index(4.5)
-                newGrades[highest] -= 1
-            except(ValueError):
-                newGrades[x] -= 1
+    goes = 0
+    while goes < 3:
+        z = -1
+        for score in newGrades:
+            z += 1
+            if score <= 2:
+                newGrades[z] += 1
+                try:
+                    highest = newGrades.index(4.5)
+                    newGrades[highest] -= 1
+                except(ValueError):
+                    newGrades[z] -= 1
+        goes += 1
 
-    print("Your required grades are:\n")
+    print("Your required grades are:")
 
     for letterGrades in newGrades:
-        print(gradeList[letterGrades]+":"+letterGrades)
+        print(letterGrades,":", dictKeys[dictValues.index(letterGrades)])
 
 
 print("******************************\n*** Mairi's GPA Calculator ***\n******************************\n1: Calculate current GPA\n2: Calculate required grades\n3: Calculate potential GPA")
